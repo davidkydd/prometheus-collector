@@ -82,7 +82,7 @@ spec:
                   resource: limits.memory
                   divisor: 1Mi
             - name: KUBE_STATE_NAME
-              value: kube-state-metrics
+              value: ama-metrics-ksm
             - name: NODE_EXPORTER_NAME
               value: "" # Replace this with the node exporter shipped out of box with AKS
             - name: NODE_EXPORTER_TARGETPORT
