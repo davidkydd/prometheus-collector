@@ -37,23 +37,15 @@ data:
           - 64c733186a20c30001b95863
       scheme: https
       tls_config:
-        ca_file: /etc/kubernetes/secrets/ca.pem #aks-operator
-        #ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt" #original
+        ca_file: /etc/kubernetes/secrets/ca.pem
         insecure_skip_verify: true
-      bearer_token_file: /etc/kubernetes/secrets/token #aks-operator
-      #bearer_token_file: "/var/run/secrets/kubernetes.io/serviceaccount/token" #original
+      bearer_token_file: /etc/kubernetes/secrets/token
       relabel_configs:
-      - source_labels:           #aks-operator
+      - source_labels:
         - __meta_kubernetes_pod_label_k8s_app
         - __meta_kubernetes_pod_container_name
         action: keep
         regex: kube-apiserver;kube-apiserver
-      #- source_labels:             #original
-      #  - __meta_kubernetes_namespace
-      #  - __meta_kubernetes_service_name
-      #  - __meta_kubernetes_endpoint_port_name
-      #  action: keep
-      #  regex: default;kubernetes;https
       metric_relabel_configs:
       - source_labels:
         - __name__
@@ -412,7 +404,7 @@ spec:
                   resource: limits.memory
                   divisor: 1Mi
             - name: KUBE_STATE_NAME
-              value: ama-metrics-ksm
+              value: kube-state-metrics
             - name: NODE_EXPORTER_NAME
               value: "" # Replace this with the node exporter shipped out of box with AKS
             - name: NODE_EXPORTER_TARGETPORT
