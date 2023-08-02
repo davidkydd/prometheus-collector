@@ -54,12 +54,12 @@ global:
     CloudEnvironment: "azurepubliccloud"
     Region: westus2
     Customer:
-      AzureResourceID: /subscriptions/26fe00f8-9173-4872-9134-bb1d2e00343a/resourcegroups/dakydd-stg/providers/Microsoft.ContainerService/managedClusters/dakydd-kydd5
-      Namespace: 64c0acb012cee1000116e6ee # kydd5
-      ControlPlaneId: 64c0acb012cee1000116e6ee #msi-adapter
+      AzureResourceID: /subscriptions/26fe00f8-9173-4872-9134-bb1d2e00343a/resourcegroups/dakydd-stg/providers/Microsoft.ContainerService/managedClusters/kydd7
+      Namespace: 64c733186a20c30001b95863 # kydd7
+      ControlPlaneId: 64c733186a20c30001b95863 #msi-adapter
       SubscriptionId: 26fe00f8-9173-4872-9134-bb1d2e00343a #msi-adapter
       ResourceGroupName: dakydd-stg #msi-adapter
-      ManagedClusterName: dakydd-kydd5 #msi-adapter
+      ManagedClusterName: kydd7 #msi-adapter
 prometheus-node-exporter:
   service:
     port: 9110
