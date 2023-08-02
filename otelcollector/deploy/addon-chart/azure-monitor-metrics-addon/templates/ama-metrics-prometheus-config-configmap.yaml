@@ -2,19 +2,33 @@ kind: ConfigMap
 apiVersion: v1
 data:
   prometheus-config: |-
-    global:
-      scrape_interval: 15s
     scrape_configs:
     - job_name: kube-apiserver
-      follow_redirects: false
-      scrape_interval: 1m
-      sample_limit: 0
-      scheme: https
+      scrape_interval: 30s
+      label_limit: 63
+      label_name_length_limit: 511
+      label_value_length_limit: 1023
       kubernetes_sd_configs:
       - role: endpoints
         namespaces:
           names:
           - {{ .Values.global.commonGlobals.Customer.Namespace }}
+      scheme: https
+      tls_config:
+        ca_file: /etc/kubernetes/secrets/ca.pem
+        insecure_skip_verify: true
+      bearer_token_file: /etc/kubernetes/secrets/token
+      relabel_configs:
+      - source_labels:
+        - __meta_kubernetes_pod_label_k8s_app
+        - __meta_kubernetes_pod_container_name
+        action: keep
+        regex: kube-apiserver;kube-apiserver
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        action: keep
+        regex: "|apiserver_request_duration_seconds|apiserver_request_duration_seconds_bucket|apiserver_request_duration_seconds_sum|apiserver_request_duration_seconds_count|apiserver_request_total|workqueue_adds_total|workqueue_depth|workqueue_queue_duration_seconds|workqueue_queue_duration_seconds_bucket|workqueue_queue_duration_seconds_sum|workqueue_queue_duration_seconds_count|process_resident_memory_bytes|process_cpu_seconds_total|go_goroutines|kubernetes_build_info|apiserver_request_slo_duration_seconds_bucket|apiserver_request_slo_duration_seconds_sum|apiserver_request_slo_duration_seconds_count"   
 metadata:
   name: ama-metrics-prometheus-config
   namespace: {{ .Values.global.commonGlobals.Customer.Namespace }}
