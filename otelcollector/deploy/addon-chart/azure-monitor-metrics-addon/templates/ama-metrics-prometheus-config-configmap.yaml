@@ -74,7 +74,7 @@ data:
         action: keep
         regex: rest_client_requests_duration_seconds_bucket|rest_client_requests_total|workqueue_depth|node_collector_evictions_total
     - job_name: kube-scheduler
-      sample_limit: 5
+      sample_limit: 200
       follow_redirects: false
       scheme: https
       kubernetes_sd_configs:
