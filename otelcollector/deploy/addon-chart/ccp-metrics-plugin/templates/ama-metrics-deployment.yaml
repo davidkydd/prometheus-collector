@@ -149,6 +149,17 @@ spec:
            capabilities:
              add:
                - NET_ADMIN
+        - name: ama-metrics-config-sync
+          image: "mcr.microsoft.com/oss/kubernetes/kubectl:v1.28.0-rc.1-linux-amd64"
+          imagePullPolicy: IfNotPresent
+          command: ["get configmap ama-metrics-settings-configmap", "-w"]
+          env:
+          - name: KUBECONFIG
+            value: /etc/kubernetes/kubeconfig
+          volumeMounts:
+          - name: kubeconfig
+            readOnly: true
+            mountPath: /etc/kubernetes/kubeconfig
       affinity:
         nodeAffinity:
           # affinity to schedule on to ephemeral os node if its available
@@ -181,10 +192,11 @@ spec:
                   - key: kubernetes.azure.com/cluster
                     operator: Exists
       volumes:
+        - name: kubeconfig
+          secret:
+            secretName: kubeconfig-file
         - name: settings-vol-config
-          configMap:
-            name: ama-metrics-settings-configmap
-            optional: true
+          emptyDir: {}
         - name: prometheus-config-vol
           configMap:
             name: ama-metrics-prometheus-config

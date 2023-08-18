@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ama-metrics2
+  namespace: kube-system
+  labels:
+    component: ama-metrics2
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  paused: false
+  selector:
+    matchLabels:
+      rsName: ama-metrics2
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        rsName: ama-metrics2
+        kubernetes.azure.com/managedby: aks
+        overlaymgr-ignore: "true"
+      annotations:
+        agentVersion: "0.0.0.1"
+        schema-versions: "v1"
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+    spec:
+      priorityClassName: system-node-critical
+      serviceAccountName: ama-metrics-serviceaccount
+      containers:
+        - name: ama-metrics-config-sync 
+          image: "mcr.microsoft.com/oss/kubernetes/kubectl:v1.28.0-rc.1-linux-amd64"
+          imagePullPolicy: IfNotPresent
+          args:
+            - "get" 
+            - "node" 
+            - "-w"
+            - "--kubeconfig=$(CCP_KUBECONFIG)"
+            #- "> /etc/config/settings/ama-metrics-settings-configmap.yaml"
+            #- "&&"
+          env:
+          - name: CCP_KUBECONFIG
+            value: /etc/kubernetes/kubeconfig/kubeconfig.yaml
+          volumeMounts:
+          - name: kubeconfig
+            readOnly: true
+            mountPath: /etc/kubernetes/kubeconfig
+      affinity:      
+        nodeAffinity:
+          # affinity to schedule on to ephemeral os node if its available
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.azure.com/mode
+                    operator: In
+                    values:
+                      - system
+            - weight: 50
+              preference:
+                matchExpressions:
+                  - key: azuremonitor/metrics.replica.preferred
+                    operator: In
+                    values:
+                      - "true"
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+                  - key: type
+                    operator: NotIn
+                    values:
+                      - virtual-kubelet
+                  - key: kubernetes.azure.com/cluster
+                    operator: Exists
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: kubeconfig-file
+        - name: settings-vol-config
+          emptyDir: {}
+        - name: prometheus-config-vol
+          configMap:
+            name: ama-metrics-prometheus-config
+            optional: true
+        - name: host-log-containers
+          hostPath:
+            path: /var/log/containers
+        - name: host-log-pods
+          hostPath:
+            path: /var/log/pods
+        - name: anchors-mariner
+          hostPath:
+            path: /etc/pki/ca-trust/anchors/
+            type: DirectoryOrCreate
+        - name: anchors-ubuntu
+          hostPath:
+            path: /usr/local/share/ca-certificates/
+            type: DirectoryOrCreate
+        - name: kubernetes-secrets
+          projected:
+            defaultMode: 420
+            sources:
+              - secret:
+                  name: kube-apiserver-ssl
+              - secret:
+                  name: kube-apiserver-token
+              - secret:
+                  name: etcd-client-tls
