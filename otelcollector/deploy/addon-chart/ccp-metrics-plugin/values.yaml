@@ -1,0 +1,24 @@
+AzureMonitorMetrics:
+  ImageRepository: /azuremonitor/containerinsights/ciprod/prometheus-collector/images
+  ImageTag: 6.7.0-main-05-04-2023-4450ad10
+  # The below 2 settings are not Azure Monitor Metrics adapter chart. They are substituted in a different manner.
+  # Please update these with the latest ones from here so that you get the image that is currently deployed by the AKS RP -
+  # Repository: https://msazure.visualstudio.com/CloudNativeCompute/_git/aks-rp?path=/ccp/charts/addon-charts/azure-monitor-metrics-addon/templates/ama-metrics-daemonset.yaml&version=GBrashmi/prom-addon-arm64&line=136&lineEnd=136&lineStartColumn=56&lineEndColumn=85&lineStyle=plain&_a=contents
+  # ImageTag: https://msazure.visualstudio.com/CloudNativeCompute/_git/aks-rp?path=/ccp/charts/kube-control-plane/templates/_images.tpl&version=GBrashmi/prom-addon-arm64&line=530&lineEnd=530&lineStartColumn=28&lineEndColumn=53&lineStyle=plain&_a=contents
+  ArcExtension: false
+  # Do not change the below settings. They are reserved for Arc Autonomous
+  isArcACluster: false
+global:
+  commonGlobals:
+    CloudEnvironment: "azurepubliccloud"
+    Region: "eastus"
+    Customer:
+      AzureResourceID: /subscriptions/18153b17-4e27-4b58-863e-f8105b8892a2/resourcegroups/standalone-230820ob1hxw/providers/Microsoft.ContainerService/managedClusters/standalone-230820ob1hxw-cx-1
+      Namespace: 64e2885768085f00014f461c #control_plane_id different: 64e270d825b63f000159717e!!!
+      SubscriptionId: 18153b17-4e27-4b58-863e-f8105b8892a2 #msi-adapter
+      ResourceGroupName: standalone-230820ob1hxw #msi-adapter
+      ManagedClusterName: standalone-230820ob1hxw-cx-1 #msi-adapter
+prometheus-node-exporter:
+  service:
+    port: 9110
+    targetPort: 9110
