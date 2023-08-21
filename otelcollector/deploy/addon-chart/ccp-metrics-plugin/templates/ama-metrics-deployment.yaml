@@ -29,7 +29,7 @@ spec:
       serviceAccountName: ama-metrics-serviceaccount-ccp
       containers:
         - name: prometheus-collector
-          image: "mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:6.7.0-main-05-04-2023-4450ad10"
+          image: "ninaccpmetrics.azurecr.io/prometheus-collector:6.7.0-main-26-07-2023-35"
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -198,7 +198,7 @@ spec:
       volumes:
         - name: settings-vol-config
           configMap:
-            name: ama-metrics-settings-configmap
+            name: ama-metrics-settings-configmap-ccp
             optional: true
         - name: prometheus-config-vol
           configMap:

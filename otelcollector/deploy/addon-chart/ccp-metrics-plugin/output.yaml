@@ -173,6 +173,52 @@ metadata:
   name: ama-metrics-prometheus-config
   namespace: 64e2885768085f00014f461c
 ---
+# Source: ama-metrics/templates/ama-metrics-settings-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+data:
+  schema-version:
+    v1
+  config-version:
+    ver1
+  prometheus-collector-settings: |-
+    default_metric_account_name = "default"
+    cluster_alias = ""
+  default-scrape-settings-enabled: |-
+    kubelet = true
+    coredns = true
+    cadvisor = true
+    kubeproxy = true
+    kubestate = true
+    nodeexporter = true
+    prometheuscollectorhealth = true
+    windowsexporter = false
+    windowskubeproxy = false
+  default-targets-metrics-keep-list: |-
+    kubelet = ""
+    coredns = ""
+    cadvisor = ""
+    kubeproxy = ""
+    kubestate = ""
+    nodeexporter = ""
+    windowsexporter = ""
+    windowskubeproxy = ""
+  debug-mode: |-
+    enabled = false
+  default-targets-scrape-interval-settings: |-
+    kubelet = "30s"
+    coredns = "30s"
+    cadvisor = "30s"
+    kubeproxy = "30s"
+    kubestate = "30s"
+    nodeexporter = "30s"
+    prometheuscollectorhealth = "30s"
+    windowsexporter = "30s"
+    windowskubeproxy = "30s"
+metadata:
+  name: ama-metrics-settings-configmap-ccp
+  namespace: 64e2885768085f00014f461c
+---
 # Source: ama-metrics/templates/ama-metrics-clusterRole.yaml
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -254,7 +300,7 @@ spec:
       serviceAccountName: ama-metrics-serviceaccount-ccp
       containers:
         - name: prometheus-collector
-          image: "mcr.microsoft.com/azuremonitor/containerinsights/ciprod/prometheus-collector/images:6.7.0-main-05-04-2023-4450ad10"
+          image: "ninaccpmetrics.azurecr.io/prometheus-collector:6.7.0-main-26-07-2023-35"
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -423,7 +469,7 @@ spec:
       volumes:
         - name: settings-vol-config
           configMap:
-            name: ama-metrics-settings-configmap
+            name: ama-metrics-settings-configmap-ccp
             optional: true
         - name: prometheus-config-vol
           configMap:
