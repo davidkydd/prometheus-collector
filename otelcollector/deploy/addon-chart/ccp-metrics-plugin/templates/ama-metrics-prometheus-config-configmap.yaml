@@ -161,5 +161,5 @@ data:
         action: keep
         regex: "|apiserver_request_total|apiserver_cache_list_fetched_objects_total|apiserver_cache_list_returned_objects_total|apiserver_flowcontrol_demand_seats_average|apiserver_flowcontrol_current_limit_seats|apiserver_flowcontrol_rejected_requests_total|apiserver_request_sli_duration_seconds|process_start_time_seconds|apiserver_request_duration_seconds|apiserver_storage_fetched_objects_total|apiserver_storage_list_returned_objects_total|apiserver_current_inflight_requests"   
 metadata:
-  name: ama-metrics-prometheus-config
+  name: ama-metrics-prometheus-config-ccp
   namespace: {{ .Values.global.commonGlobals.Customer.Namespace }}

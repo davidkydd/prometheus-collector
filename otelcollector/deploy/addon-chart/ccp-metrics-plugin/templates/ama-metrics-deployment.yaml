@@ -202,7 +202,7 @@ spec:
             optional: true
         - name: prometheus-config-vol
           configMap:
-            name: ama-metrics-prometheus-config
+            name: ama-metrics-prometheus-config-ccp
             optional: true
         - name: host-log-containers
           hostPath:
