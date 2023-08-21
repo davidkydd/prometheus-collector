@@ -173,52 +173,6 @@ metadata:
   name: ama-metrics-prometheus-config-ccp
   namespace: 64e2885768085f00014f461c
 ---
-# Source: ama-metrics/templates/ama-metrics-settings-configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-data:
-  schema-version:
-    v1
-  config-version:
-    ver1
-  prometheus-collector-settings: |-
-    default_metric_account_name = "default"
-    cluster_alias = ""
-  default-scrape-settings-enabled: |-
-    kubelet = true
-    coredns = true
-    cadvisor = true
-    kubeproxy = true
-    kubestate = true
-    nodeexporter = true
-    prometheuscollectorhealth = true
-    windowsexporter = false
-    windowskubeproxy = false
-  default-targets-metrics-keep-list: |-
-    kubelet = ""
-    coredns = ""
-    cadvisor = ""
-    kubeproxy = ""
-    kubestate = ""
-    nodeexporter = ""
-    windowsexporter = ""
-    windowskubeproxy = ""
-  debug-mode: |-
-    enabled = false
-  default-targets-scrape-interval-settings: |-
-    kubelet = "30s"
-    coredns = "30s"
-    cadvisor = "30s"
-    kubeproxy = "30s"
-    kubestate = "30s"
-    nodeexporter = "30s"
-    prometheuscollectorhealth = "30s"
-    windowsexporter = "30s"
-    windowskubeproxy = "30s"
-metadata:
-  name: ama-metrics-settings-configmap-ccp
-  namespace: 64e2885768085f00014f461c
----
 # Source: ama-metrics/templates/ama-metrics-clusterRole.yaml
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
