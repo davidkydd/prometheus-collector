@@ -14,7 +14,7 @@ global:
     Region: "eastus"
     Customer:
       AzureResourceID: /subscriptions/18153b17-4e27-4b58-863e-f8105b8892a2/resourcegroups/standalone-230820ob1hxw/providers/Microsoft.ContainerService/managedClusters/standalone-230820ob1hxw-cx-1
-      Namespace: 64e2885768085f00014f461c #control_plane_id different: 64e270d825b63f000159717e!!!
+      Namespace: 64e2885768085f00014f461c #namespace of the overlay cluster, hosted on this standalone underlay
       SubscriptionId: 18153b17-4e27-4b58-863e-f8105b8892a2 #msi-adapter
       ResourceGroupName: standalone-230820ob1hxw #msi-adapter
       ManagedClusterName: standalone-230820ob1hxw-cx-1 #msi-adapter
