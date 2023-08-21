@@ -1,12 +1,12 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ama-metrics-clusterrolebinding
+  name: ama-metrics-clusterrolebinding-ccp
 subjects:
   - kind: ServiceAccount
-    name: ama-metrics-serviceaccount
+    name: ama-metrics-serviceaccount-ccp
     namespace: {{ .Values.global.commonGlobals.Customer.Namespace }}
 roleRef:
   kind: ClusterRole
-  name: ama-metrics-reader
+  name: ama-metrics-reader-ccp
   apiGroup: rbac.authorization.k8s.io
